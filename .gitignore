@@ -1,0 +1,4 @@
+# Honeypot logs
+logs/
+*.log
+honeypot.log
