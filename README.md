@@ -29,7 +29,7 @@ honeypot/
 └── Honeypot_logs/      # Auto-created daily logs
     └── honeypot_YYYY-MM-DD.jsonl
 ```
- ## 📈 What You'll Learn From Attackers
+## 📈 What You'll Learn From Attackers
 
-Most common: SSH brute-force (root, admin, test + 123456 passwords)
-Watch for: Port scanners, vulnerability scanners, exploit attempts
+-**Most common**: SSH brute-force (root, admin, test + 123456 passwords)
+-**Watch for**: Port scanners, vulnerability scanners, exploit attempts
