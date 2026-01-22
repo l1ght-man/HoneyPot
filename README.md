@@ -13,11 +13,11 @@ Attackers scan → Connect to ports 22/21/80 → Get fake service banners → Se
 - **HTTP (80)**: Fake webpage → logs GET/POST requests
 
 ## 🚀 Quick Start 
-# 1. git clone
+1. git clone
 ```bash
 git clone https://github.com/l1ght-man/HoneyPot.git
 ```
-# 2. run it
+ 2. run it
 ```bash
 python honeypot.py
 ```
