@@ -56,7 +56,7 @@ class Honeypot:
                                     key, value = line.split(': ', 1)
                                     headers[key] = value.strip()
                             if 'User-Agent' in headers:
-                                self.log_activity(ip, port, f"User-Agent: {headers['User-Agent']}")
+                                self.log_activity(ip, port, f"User-Agent: {headers['User-Agent']}...")
                             else:
                                 self.log_activity(ip, port, "Empty HTTP request")
             else:
