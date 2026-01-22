@@ -22,13 +22,13 @@ git clone https://github.com/l1ght-man/HoneyPot.git
 python honeypot.py
 ```
 ## 🛠️ File Structure
-
+```bash
 honeypot/
 ├── honeypot.py          # Main honeypot code
 ├── README.md           # This file
 └── Honeypot_logs/      # Auto-created daily logs
     └── honeypot_YYYY-MM-DD.jsonl
-
+```
  ## 📈 What You'll Learn From Attackers
 
 Most common: SSH brute-force (root, admin, test + 123456 passwords)
