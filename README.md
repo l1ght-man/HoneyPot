@@ -41,9 +41,9 @@ honeypot/
 
 ## 🙏 Acknowledgments & Credits
 
-- **Core concept**: Low-interaction honeypot tutorials[1][2]
+- **Core concept**: Low-interaction honeypot tutorials
 - **HTML/CSS/JS**: **100% AI-generated** (no credit taken - public domain for learning)
-- **Python sockets**: RealPython socket guide[3]
-- **HTTP parsing**: Standard web server patterns[4]
+- **Python sockets**: RealPython socket guide
+- **HTTP parsing**: Standard web server patterns
 
 **AI used transparently** - HTML is AI-generated template. All Python logic human-written step-by-step.
