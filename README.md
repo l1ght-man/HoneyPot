@@ -24,13 +24,25 @@ python honeypot.py
 ## 🛠️ File Structure
 ```bash
 honeypot/
-├── honeypot.py          # Main honeypot code
-├── README.md           # This file
-└── Honeypot_logs/      # Auto-created daily logs
-    └── honeypot_YYYY-MM-DD.jsonl
+├── honeypot.py # 🐍 Main Python honeypot logic
+├── fake_website.html # 🎨 AI-generated fake vulnerable website
+│ └── Purely AI-created HTML/CSS/JS - customize freely!
+├── README.md # 📖 This documentation
+└── Honeypot_logs/ # 📊 Auto-created daily JSONL logs
+└── honeypot_YYYY-MM-DD.jsonl
 ```
 ## 📈 What You'll Learn From Attackers
 
 -**Most common**: SSH brute-force (root, admin, test + 123456 passwords) 
 
 -**Watch for**: Port scanners, vulnerability scanners, exploit attempts
+
+
+```markdown
+## 🙏 Acknowledgments & Credits
+- **Core concept**: Low-interaction honeypot tutorials[1][2]
+- **HTML/CSS/JS**: **100% AI-generated** (no credit taken - public domain for learning)
+- **Python sockets**: RealPython socket guide[3]
+- **HTTP parsing**: Standard web server patterns[4]
+
+**AI used transparently** - HTML is AI-generated template. All Python logic human-written step-by-step.
