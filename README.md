@@ -15,7 +15,7 @@ Attackers scan → Connect to ports 22/21/80 → Get fake service banners → Se
 - **HTTP (80)**: **AI-generated** fake admin panel → logs GET/POST requests + form submissions
 - **Log Analyzer**: HTML dashboard → top IPs, paths, scanners
 
-## 🚀 Quick Start (Windows 11)
+## 🚀 Quick Start 
 
 ```bash
 # Clone repo
