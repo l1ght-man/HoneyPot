@@ -38,8 +38,9 @@ honeypot/
 -**Watch for**: Port scanners, vulnerability scanners, exploit attempts
 
 
-```markdown
+
 ## 🙏 Acknowledgments & Credits
+
 - **Core concept**: Low-interaction honeypot tutorials[1][2]
 - **HTML/CSS/JS**: **100% AI-generated** (no credit taken - public domain for learning)
 - **Python sockets**: RealPython socket guide[3]
