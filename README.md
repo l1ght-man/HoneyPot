@@ -31,5 +31,6 @@ honeypot/
 ```
 ## 📈 What You'll Learn From Attackers
 
--**Most common**: SSH brute-force (root, admin, test + 123456 passwords)
+-**Most common**: SSH brute-force (root, admin, test + 123456 passwords) 
+
 -**Watch for**: Port scanners, vulnerability scanners, exploit attempts
