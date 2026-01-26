@@ -1,4 +1,3 @@
 # Honeypot logs
-logs/
-*.log
-honeypot.log
+Honeypot_logs/
+*.jsonl
