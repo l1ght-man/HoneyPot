@@ -9,6 +9,8 @@ from pathlib import Path
 LOG_DIR = Path("Honeypot_logs")
 LOG_DIR.mkdir(exist_ok=True)
 
+class Virtual
+
 class Honeypot:
     def __init__(self, ports=[22,21,80]):
         self.ports = ports

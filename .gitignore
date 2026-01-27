@@ -1,3 +1,5 @@
-# Honeypot logs
+# Honeypot logs directory
 Honeypot_logs/
+
+# JSONL files
 *.jsonl
