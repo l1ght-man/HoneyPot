@@ -3,3 +3,6 @@ Honeypot_logs/
 
 # JSONL files
 *.jsonl
+
+#report
+attack_report.html

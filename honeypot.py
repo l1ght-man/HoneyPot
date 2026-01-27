@@ -4,15 +4,15 @@ import json
 import time
 import threading
 from pathlib import Path
-
-
+import docker
+import select
 LOG_DIR = Path("Honeypot_logs")
 LOG_DIR.mkdir(exist_ok=True)
 
-class Virtual
+
 
 class Honeypot:
-    def __init__(self, ports=[22,21,80]):
+    def __init__(self, ports=[22,21,80,23]):
         self.ports = ports
         with open ('fake_website.html' , 'rb') as f:
             html_content = f.read()
@@ -22,7 +22,8 @@ class Honeypot:
     80: b"""HTTP/1.1 200 OK\r\n"""
         b"""Server: Apache/2.4.41 (Ubuntu)\r\n"""
         b"""Content-Type: text/html; charset=UTF-8\r\n"""
-        b"""Connection: close\r\n\r\n""" + html_content
+        b"""Connection: close\r\n\r\n""" + html_content,
+    23: b""
 }
  
     def log_activity(self, ip , port , data=""):
@@ -61,6 +62,10 @@ class Honeypot:
                                 self.log_activity(ip, port, f"User-Agent: {headers['User-Agent']}...")
                             else:
                                 self.log_activity(ip, port, "Empty HTTP request")
+            if port == 23 :
+                self.log_activity(ip,port,"starting Docker proxy")
+                self.start_docker_honeypot(client_sock,ip)
+                return            
             else:
                 data= client_sock.recv(1024).decode('utf-8', errors='ignore')
                 self.log_activity(ip,port,f"Received: {data}")
@@ -80,6 +85,95 @@ class Honeypot:
             client_thread = threading.Thread(target=self.handle_client,args=(client_sock, addr, port))
             client_thread.start()
         sock.close()
+    def docker_output_reader(self, docker_sock, client_sock):
+        """Thread: Reads from Docker, Sends to Hacker"""
+        try :
+            while True:
+                data = docker_sock.recv(4096)
+                if not data: break
+                format_output = data.replace(b'\n',b'\n\r')
+                client_sock.send(data)
+        except Exception as e:
+            print(f"Reader Thread ended: {e}") 
+    def start_docker_honeypot(self, client_sock, ip):
+        client_sock.settimeout(300)
+        client = docker.from_env()
+        print(f"[*] Spawning container for {ip}...")
+        trap_path = Path.cwd()
+        startup_cmd = "bash -c 'stty -echo; exec bash --noediting'"
+        # container running
+        container = client.containers.run(
+            "ubuntu:latest", 
+            startup_cmd,
+            detach=True, 
+            tty=True, 
+            stdin_open=True,
+            hostname="production-server",
+            )
+        try:
+            docker_sock = container.attach_socket(params={'stdin': 1, 'stdout':1 , 'stream':1}) 
+            client_sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1) 
+            client_sock.send(bytes([255,251,1]))
+            client_sock.send(bytes([255, 251, 3]))
+            client_sock.send(bytes([255,252,34]))
+            client_sock.send(b"Connected to Ubuntu 22.04.4 LTS\r\n")
+              
+            t = threading.Thread(target=self.docker_output_reader, args=(docker_sock, client_sock))
+            t.daemon = True
+            t.start() 
+            
+            command_buffer = b""
+            while True:
+                        hacker_input = client_sock.recv(1024)
+                        if not hacker_input : break
+                        clean_input = b""
+                        for byte in hacker_input :
+                            if byte == 127 or byte == 8 :
+                                if len(command_buffer) > 0:
+                                    client_sock.send(b'\b \b')
+                                    docker_sock.send(b'\x7f')
+                                    command_buffer = command_buffer[:-1]
+                                continue
+                            if byte < 128:
+                                    char = bytes([byte])
+                                    if char == b'\n' or char == b'\r'  :
+                                        client_sock.send(b'\r\n')
+                                        docker_sock.send(b'\n')
+                                        try:
+                                             decoded_cmd = command_buffer.decode('utf-8', errors='ignore').strip()
+                                             if decoded_cmd: 
+                                                  self.log_activity(ip, 23, f"CMD: {decoded_cmd}")
+                                        except:pass
+                                        command_buffer = b""
+                                    else:
+                                        client_sock.send(char)
+                                        docker_sock.send(char)
+                                        command_buffer += char 
+
+                        if clean_input:
+                            
+                            if b'\r' in clean_input or b'\n' in clean_input :
+                                    client_sock.send(b'\r\n')
+                                    docker_sock.send(b'\n')   
+                            else:
+                                    client_sock.send(clean_input)
+                                    docker_sock.send(clean_input)   
+                                        
+                                    command_buffer += clean_input
+                                    try:
+                                       decoded_cmd = command_buffer.decode('utf-8',errors='ignore').strip()
+                                       if decoded_cmd:
+                                             self.log_activity(ip , 23 , f"CMD: {decoded_cmd}" )
+                                    except : pass
+                                    command_buffer = b""
+        except Exception as e:
+            print(f"Eroor: {e}")
+        finally:
+            print(f"[*] Killing container for {ip}")
+            container.stop()
+            container.remove()
+            client_sock.close()
+              
 
 
 if __name__ == '__main__':
